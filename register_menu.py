@@ -61,6 +61,10 @@ if __name__ == "__main__":
         "Custom/Markers/Export projections...",
         marker_tools.export_markers_images_dialog,
     )
+    Metashape.app.addMenuItem(
+        "Custom/Markers/Remove blue flags...",
+        marker_tools.remove_marker_blue_flags_dialog,
+    )
 
     # Incremental alignment
     Metashape.app.addMenuItem(

@@ -89,6 +89,34 @@ def export_markers_images(chunk, path, header=True, separator=","):
     return exported
 
 
+def remove_marker_blue_flags(
+    chunk: Metashape.Chunk,
+    cameras: list[Metashape.Camera] | None = None,
+    markers: list[Metashape.Marker] | None = None,
+) -> int:
+    """Remove blue-flag marker projections (unpinned, i.e. auto-estimated).
+
+    Pinned (green flag, manually placed) projections are left untouched.
+
+    Args:
+        chunk: Chunk to process.
+        cameras: Cameras to process. All chunk cameras if None.
+        markers: Markers to process. All chunk markers if None.
+
+    Returns:
+        Number of projections removed.
+    """
+    camera_set = set(chunk.cameras if cameras is None else cameras)
+    count = 0
+    for marker in chunk.markers if markers is None else markers:
+        for camera, proj in list(marker.projections.items()):
+            if camera in camera_set and not proj.pinned:
+                del marker.projections[camera]
+                print("Removed marker '{}' on '{}'".format(marker.label, camera.label))
+                count += 1
+    return count
+
+
 # ----- dialogs -----
 
 
@@ -130,3 +158,35 @@ def export_markers_images_dialog():
 
     n = export_markers_images(chunk, path)
     Metashape.app.messageBox("Exported {} projections.".format(n))
+
+
+def remove_marker_blue_flags_dialog() -> None:
+    """Remove blue-flag projections on selected images, else of selected markers, else all."""
+    chunk = require_active_chunk()
+    if not chunk:
+        return
+
+    if not chunk.markers:
+        Metashape.app.messageBox("No markers in current chunk.")
+        return
+
+    sel_cameras = [c for c in chunk.cameras if c.selected]
+    sel_markers = [m for m in chunk.markers if m.selected]
+    cameras = markers = None
+    if sel_cameras:
+        cameras = sel_cameras
+        scope = "{} selected images".format(len(sel_cameras))
+    elif sel_markers:
+        markers = sel_markers
+        scope = "{} selected markers".format(len(sel_markers))
+    else:
+        scope = "all images and markers"
+
+    if not ask_bool("Remove marker blue flags from {}?".format(scope)):
+        print("Remove blue flags: cancelled")
+        return
+
+    print("Remove blue flags: scope = {}".format(scope))
+    n = remove_marker_blue_flags(chunk, cameras, markers)
+    print("Remove blue flags: {} removed".format(n))
+    Metashape.app.messageBox("Removed {} blue flags.".format(n))
