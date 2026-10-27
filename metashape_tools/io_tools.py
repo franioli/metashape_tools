@@ -46,20 +46,18 @@ def save_sparse(
             if save_color:
                 cols.extend(["r", "g", "b"])
             if save_cov:
-                cols.extend(
-                    [
-                        "sX",
-                        "sY",
-                        "sZ",
-                        "covXX",
-                        "covXY",
-                        "covXZ",
-                        "covYY",
-                        "covYZ",
-                        "covZZ",
-                        "var",
-                    ]
-                )
+                cols.extend([
+                    "sX",
+                    "sY",
+                    "sZ",
+                    "covXX",
+                    "covXY",
+                    "covXZ",
+                    "covYY",
+                    "covYZ",
+                    "covZZ",
+                    "var",
+                ])
             f.write("{}\n".format(sep.join(cols)))
 
         for point in tie_points.points:
@@ -78,20 +76,18 @@ def save_sparse(
                 cov = R * cov * R.t()
                 u, s, v = cov.svd()
                 var = math.sqrt(sum(s))
-                line.extend(
-                    [
-                        math.sqrt(cov[0, 0]),
-                        math.sqrt(cov[1, 1]),
-                        math.sqrt(cov[2, 2]),
-                        cov[0, 0],
-                        cov[0, 1],
-                        cov[0, 2],
-                        cov[1, 1],
-                        cov[1, 2],
-                        cov[2, 2],
-                        var,
-                    ]
-                )
+                line.extend([
+                    math.sqrt(cov[0, 0]),
+                    math.sqrt(cov[1, 1]),
+                    math.sqrt(cov[2, 2]),
+                    cov[0, 0],
+                    cov[0, 1],
+                    cov[0, 2],
+                    cov[1, 1],
+                    cov[1, 2],
+                    cov[2, 2],
+                    var,
+                ])
 
             f.write("{}\n".format(sep.join(str(x) for x in line)))
             exported += 1

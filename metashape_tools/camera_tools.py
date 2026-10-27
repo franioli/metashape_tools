@@ -149,13 +149,11 @@ def write_estimated_to_source(
             estimated_pos = camera_geocentric
 
         if offset:
-            estimated_pos = Metashape.Vector(
-                [
-                    estimated_pos.x + offset.x,
-                    estimated_pos.y + offset.y,
-                    estimated_pos.z + offset.z,
-                ]
-            )
+            estimated_pos = Metashape.Vector([
+                estimated_pos.x + offset.x,
+                estimated_pos.y + offset.y,
+                estimated_pos.z + offset.z,
+            ])
 
         camera.reference.location = estimated_pos
         camera.reference.enabled = True

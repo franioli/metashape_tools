@@ -55,9 +55,11 @@ def add_fiducial(
     m.projections[cam] = Metashape.Marker.Projection(Metashape.Vector([x, y]), True)
 
     if world_x is not None and world_y is not None:
-        m.reference.location = Metashape.Vector(
-            [float(world_x), float(world_y), float(world_z)]
-        )
+        m.reference.location = Metashape.Vector([
+            float(world_x),
+            float(world_y),
+            float(world_z),
+        ])
         m.reference.enabled = True
 
     return m
@@ -144,13 +146,11 @@ def import_fiducials_from_file(path: str, chunk: Metashape.Chunk) -> dict:
             (r for r in label_recs if r["world_x"] is not None), None
         )
         if first_with_world:
-            m.reference.location = Metashape.Vector(
-                [
-                    float(first_with_world["world_x"]),
-                    float(first_with_world["world_y"]),
-                    float(first_with_world["world_z"]),
-                ]
-            )
+            m.reference.location = Metashape.Vector([
+                float(first_with_world["world_x"]),
+                float(first_with_world["world_y"]),
+                float(first_with_world["world_z"]),
+            ])
             m.reference.enabled = True
 
         created += 1

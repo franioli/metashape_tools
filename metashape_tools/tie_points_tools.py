@@ -312,15 +312,13 @@ def estimate_tiepoint_distribution(
         }
 
         lab = (cam.label or "")[:36]
-        rows.append(
-            [
-                lab,
-                str(n),
-                f"{occupancy:.3f}",
-                f"{bbox_ratio:.3f}",
-                f"{center_offset:.3f}",
-            ]
-        )
+        rows.append([
+            lab,
+            str(n),
+            f"{occupancy:.3f}",
+            f"{bbox_ratio:.3f}",
+            f"{center_offset:.3f}",
+        ])
 
     # Sort by occupancy (worst first)
     rows.sort(key=lambda r: float(r[2]))
