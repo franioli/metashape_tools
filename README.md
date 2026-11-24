@@ -2,6 +2,50 @@
 
 Collection of python scripts for Metashape.
 
+## Use the scripts in Metashape
+
+### 1. Get the code
+
+Clone the repository:
+
+```bash
+git clone <repository-url> metashape_tools
+```
+
+or download it as a zip from GitHub (Code → Download ZIP) and extract it.
+
+### 2. Load the scripts
+
+Choose one of the two options.
+
+**Option A: load automatically at every start.** Copy `register_menu.py` and the `metashape_tools/` folder into Metashape's startup scripts folder (create the `scripts` folder if it does not exist):
+
+| OS      | Folder                                                    |
+| ------- | --------------------------------------------------------- |
+| Linux   | `~/.local/share/Agisoft/Metashape Pro/scripts`            |
+| Windows | `%LOCALAPPDATA%\Agisoft\Metashape Pro\scripts`            |
+| macOS   | `~/Library/Application Support/Agisoft/Metashape Pro/scripts` |
+
+Restart Metashape. All the tools are registered when it starts.
+
+**Option B: load on demand.** Keep the repository where it is. In Metashape, open `Tools → Run Script...`, select `register_menu.py` and run it. Repeat after each restart.
+
+> The `metashape_tools/` folder must be importable by Metashape's Python. If you get `ModuleNotFoundError: metashape_tools`, check the Console for the paths it searched and place the folder in one of them.
+
+### 3. Use the tools
+
+The tools appear in the new **Custom** menu, grouped by topic:
+
+- `Custom/TiePoints`: statistics, covariance filter, disable outside region
+- `Custom/Cameras`: remove duplicates, source coordinates, export images and reference
+- `Custom/Markers`: import/export projections, remove blue flags
+- `Custom/Incremental Alignment`: align unaligned, realign selected, transfer oriented cameras
+- `Custom/Chunk`, `Custom/Fiducials`, `Custom/IO`, `Custom/Other`: remaining utilities
+
+Several tools (e.g. `Remove blue flags`) work on the current selection when there is one, and on everything otherwise. Operations that change the project ask for confirmation first, and their log is written to the Console.
+
+Note: if you make any edit to the code, use `Custom/Other/Reload tools` to apply the changes without restarting Metashape.
+
 ## Structure
 ```
 metashape_scripts/
